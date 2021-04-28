@@ -147,7 +147,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 				n++
 		return n
 
-	else if (copytext_char(T,1,7) == "status")
+	else if (copytext(T,1,7) == "status")
 		var/input[] = params2list(T)
 		var/list/s = list()
 		s["version"] = config.game_version
@@ -162,7 +162,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 		s["players"] = 0
 		s["stationtime"] = stationtime2text()
 		s["roundduration"] = roundduration2text()
-		s["map"] = replacetext_char(GLOB.using_map.full_name, "\improper", "") //Done to remove the non-UTF-8 text macros 
+		s["map"] = replacetext(GLOB.using_map.full_name, "\improper", "") //Done to remove the non-UTF-8 text macros 
 
 		var/active = 0
 		var/list/players = list()
@@ -226,7 +226,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 	* The following topic calls are only available if a ban comms secret has been defined, supplied, and is correct.
 	* * * * * * * */
 
-	if(copytext_char(T,1,14) == "placepermaban")
+	if(copytext(T,1,14) == "placepermaban")
 		var/input[] = params2list(T)
 		if(!config.ban_comms_password)
 			SET_THROTTLE(10 SECONDS, "Bans Not Enabled")
@@ -262,7 +262,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 		SET_THROTTLE(10 SECONDS, "Comms Not Enabled")
 		return "Not enabled"
 
-	else if(copytext_char(T,1,5) == "laws")
+	else if(copytext(T,1,5) == "laws")
 		var/input[] = params2list(T)
 		if(input["key"] != config.comms_password)
 			SET_THROTTLE(30 SECONDS, "Bad Comms Key")
@@ -309,7 +309,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 				ret[M.key] = M.name
 			return list2params(ret)
 
-	else if(copytext_char(T,1,5) == "info")
+	else if(copytext(T,1,5) == "info")
 		var/input[] = params2list(T)
 		if(input["key"] != config.comms_password)
 			SET_THROTTLE(30 SECONDS, "Bad Comms Key")
@@ -359,7 +359,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 				ret[M.key] = M.name
 			return list2params(ret)
 
-	else if(copytext_char(T,1,9) == "adminmsg")
+	else if(copytext(T,1,9) == "adminmsg")
 		/*
 			We got an adminmsg from IRC bot lets split the input then validate the input.
 			expected output:
@@ -405,7 +405,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 				to_chat(A, amessage)
 		return "Message Successful"
 
-	else if(copytext_char(T,1,6) == "notes")
+	else if(copytext(T,1,6) == "notes")
 		/*
 			We got a request for notes from the IRC Bot
 			expected output:
@@ -418,7 +418,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 			return "Bad Key"
 		return show_player_info_irc(ckey(input["notes"]))
 
-	else if(copytext_char(T,1,4) == "age")
+	else if(copytext(T,1,4) == "age")
 		var/input[] = params2list(T)
 		if(input["key"] != config.comms_password)
 			SET_THROTTLE(30 SECONDS, "Bad Comms Key")
@@ -432,7 +432,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 		else
 			return "Database connection failed or not set up"
 
-	else if(copytext_char(T,1,19) == "prometheus_metrics")
+	else if(copytext(T,1,19) == "prometheus_metrics")
 		var/input[] = params2list(T)
 		if(input["key"] != config.comms_password)
 			SET_THROTTLE(30 SECONDS, "Bad Comms Key")
@@ -515,13 +515,13 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 				if (!line)
 					continue
 
-				if (copytext_char(line, 1, 2) == ";")
+				if (copytext(line, 1, 2) == ";")
 					continue
 
 				var/title = "Moderator"
 				var/rights = admin_ranks[title]
 
-				var/ckey = copytext_char(line, 1, length(line)+1)
+				var/ckey = copytext(line, 1, length(line)+1)
 				var/datum/admins/D = new /datum/admins(title, rights, ckey)
 				D.associate(GLOB.ckey_directory[ckey])
 
@@ -579,7 +579,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 	if(game_id)
 		GLOB.log_directory += "[game_id]"
 	else
-		GLOB.log_directory += "[replacetext_char(time_stamp(), ":", ".")]"
+		GLOB.log_directory += "[replacetext(time_stamp(), ":", ".")]"
 
 	GLOB.world_qdel_log = file("[GLOB.log_directory]/qdel.log")
 	to_file(GLOB.world_qdel_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")

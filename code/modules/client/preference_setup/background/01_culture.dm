@@ -69,7 +69,7 @@
 				// this is yucky but we need to do it because, right now, the culture subsystem references decls by their string names
 				// html_encode() doesn't properly sanitize + symbols, otherwise we could just use that
 				// instead, we manually rip out the plus symbol and then replace it on OnTopic
-				var/sanitized_value = html_encode(replacetext_char(V, "+", "PLUS"))
+				var/sanitized_value = html_encode(replacetext(V, "+", "PLUS"))
 				
 				if (pref.cultural_info[token] == V)
 					. += "<span class='linkOn'>[V]</span> "
@@ -93,7 +93,7 @@
 
 		var/new_token = href_list["set_token_entry_[token]"]
 		if (!isnull(new_token))
-			pref.cultural_info[token] = html_decode(replacetext_char(new_token, "PLUS", "+"))
+			pref.cultural_info[token] = html_decode(replacetext(new_token, "PLUS", "+"))
 			return TOPIC_REFRESH
 			
 	. = ..()
