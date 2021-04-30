@@ -220,7 +220,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	if(istype(user, /mob/living/carbon/human) || istype(user,/mob/living/silicon) )
 		var/mob/living/human_or_robot_user = user
 		var/dat
-		dat = text("<HEAD><TITLE>Newscaster</TITLE></HEAD><H3>Newscaster Unit #[src.unit_no]</H3>")
+		dat = text("<meta charset=\"UTF-8\"><HEAD><TITLE>Newscaster</TITLE></HEAD><H3>Newscaster Unit #[src.unit_no]</H3>")
 
 		src.scan_user(human_or_robot_user) //Newscaster scans you
 
@@ -855,7 +855,7 @@ obj/item/newspaper/attack_self(mob/user)
 					dat+="<B>Photo:</B>: "
 					if(important_message.img)
 						send_rsc(user, important_message.img, "tmp_photow.png")
-						dat+="<BR><img src='tmp_photow.png' width = '180'>"
+						dat+="<meta charset=\"UTF-8\"><BR><img src='tmp_photow.png' width = '180'>"
 					else
 						dat+="None"
 				else

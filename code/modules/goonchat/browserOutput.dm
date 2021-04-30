@@ -68,7 +68,7 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/tmp/iconCache.sav")) //Cache o
 	var/list/params = list()
 	for(var/key in href_list)
 		if(length(key) > 7 && findtext(key, "param")) // 7 is the amount of characters in the basic param key template.
-			var/param_name = copytext(key, 7, -1)
+			var/param_name = copytext_char(key, 7, -1)
 			var/item       = href_list[key]
 
 			params[param_name] = item
@@ -226,15 +226,15 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("data/tmp/iconCache.sav")) //Cache o
 
 	var/original_message = message
 	if(handle_whitespace)
-		message = replacetext(message, "\n", "<br>")
-		message = replacetext(message, "\t", "[FOURSPACES][FOURSPACES]")
+		message = replacetext_char(message, "\n", "<br>")
+		message = replacetext_char(message, "\t", "[FOURSPACES][FOURSPACES]")
 
 	//Replace expanded \icon macro with icon2html
 	//regex/Replace with a proc won't work here because icon2html takes target as an argument and there is no way to pass it to the replacement proc
 	//not even hacks with reassigning usr work
 	var/regex/i = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")
 	while(regex_find(i, message))
-		message = copytext(message,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext(message,i.next)
+		message = copytext_char(message,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext_char(message,i.next)
 
 	if(trailing_newline)
 		message += "<br>"
